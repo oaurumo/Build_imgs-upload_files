@@ -1,0 +1,15 @@
+https://github.com/yituorou/meatshell/archive/refs/tags/v0.7.2.tar.gz
+https://github.com/yituorou/meatshell/archive/refs/tags/v0.7.2.zip
+https://github.com/yituorou/meatshell/releases/download/v0.7.2/meatshell-v0.7.2-windows-x86_64.zip
+https://github.com/yituorou/meatshell/releases/download/v0.7.2/meatshell-v0.7.2-windows-x86_64.msi
+https://github.com/yituorou/meatshell/releases/download/v0.7.2/meatshell-v0.7.2-macos-x86_64.zip
+https://github.com/yituorou/meatshell/releases/download/v0.7.2/meatshell-v0.7.2-macos-aarch64.zip
+https://github.com/yituorou/meatshell/releases/download/v0.7.2/meatshell-v0.7.2-linux-x86_64.tar.gz
+https://github.com/yituorou/meatshell/releases/download/v0.7.2/meatshell-v0.7.2-linux-x86_64.flatpak
+https://github.com/yituorou/meatshell/releases/download/v0.7.2/meatshell-v0.7.2-linux-x86_64.AppImage
+https://github.com/yituorou/meatshell/releases/download/v0.7.2/meatshell-v0.7.2-linux-x86_64-glibc228.tar.gz
+https://github.com/yituorou/meatshell/releases/download/v0.7.2/meatshell-v0.7.2-linux-arm64.deb
+https://github.com/yituorou/meatshell/releases/download/v0.7.2/meatshell-v0.7.2-linux-amd64.deb
+https://github.com/yituorou/meatshell/releases/download/v0.7.2/meatshell-v0.7.2-linux-aarch64.tar.gz
+https://github.com/yituorou/meatshell/releases/download/v0.7.2/meatshell-v0.7.2-linux-aarch64-glibc228.tar.gz
+https://github.com/yituorou/meatshell/releases/download/v0.7.2/meatshell-v0.7.2-android-arm64-beta.apk
