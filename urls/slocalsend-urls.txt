@@ -1,3 +1,5 @@
+https://github.com/anujkumarprasad/webdav-server-apk/archive/refs/tags/v1.0.0.tar.gz
+https://github.com/anujkumarprasad/webdav-server-apk/releases/download/v1.0.0/webdav-release.apk
 https://github.com/localsend/localsend/archive/refs/tags/v1.17.0.tar.gz
 https://github.com/localsend/localsend/releases/download/v1.17.0/LocalSend-1.17.0.dmg
 https://github.com/localsend/localsend/releases/download/v1.17.0/LocalSend-1.17.0-windows-x86-64.zip
