@@ -18,6 +18,6 @@ https://github.com/BryceWG/BiBi-Keyboard/releases/download/models/sherpa-onnx-qw
 https://bibidocs.brycewg.com/getting-started/asr-providers.html
 https://github.com/BryceWG/trime-bibi-keyboard/releases/download/3.3.12-v3/com.osfans.trime.bibi-3.3.12-v3-0-g378cd8d85-arm64-v8a-release.apk
 https://github.com/BryceWG/fcitx5-android-bibi-keyboard/releases/download/0.1.3-2/org.fcitx.fcitx5.android-0.1.3-2-0-gdf8e0324-arm64-v8a-release.apk
-https://github.com/BryceWG/BiBi-Keyboard/releases/download/v4.4.3/app-release-4.4.3-armeabi-v7a.apk
-https://github.com/BryceWG/BiBi-Keyboard/releases/download/v4.4.3/app-release-4.4.3-arm64-v8a.apk
+https://github.com/BryceWG/BiBi-Keyboard/releases/download/v4.4.5/app-release-4.4.5-armeabi-v7a.apk
+https://github.com/BryceWG/BiBi-Keyboard/releases/download/v4.4.5/app-release-4.4.5-arm64-v8a.apk
 https://github.com/BryceWG/BiBi-Keyboard/archive/refs/heads/main.zip
