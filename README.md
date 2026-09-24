@@ -4,7 +4,7 @@
 #### https://github.com/armbian/os
 #### https://github.com/ophub/amlogic-s9xxx-armbian
 #### https://github.com/oaurumo/ophub-armbian
-#### https://github.com/oaurumo/armbian-installer   forked from wukongdaily/img-installer
+#### https://github.com/oaurumo/armbian-installer  from wukongdaily
 #===========================
 
 
