@@ -53,7 +53,7 @@ sudo systemctl restart docker
 
 ================================
 快捷命令
-  https://toolshu.com/docker-mirror 
+https://toolshu.com/docker-mirror 
 第一步：输入原始镜像地址获取命令.
 ghcr.io/armbian/docker-armbian-build:armbian-debian-trixie-latest
 获取命令
