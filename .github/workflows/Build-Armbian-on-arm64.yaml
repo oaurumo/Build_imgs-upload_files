@@ -1,4 +1,4 @@
-name: Build Armbian
+name: Build Armbian Arm64
 
 on:
   workflow_dispatch:
@@ -6,9 +6,9 @@ on:
       board:
         description: '目标开发板 (如: odroidn2, rock-5b, uefi-x86)'
         required: true
-        default: 'uefi-x86'
+        default: 'odroidm1'
       release:
-        description: '基础发行版 (bookworm/noble/jammy)'
+        description: '基础发行版 (trixie/bookworm/resolute/noble/jammy)'
         required: true
         default: 'noble'
       branch:
@@ -81,10 +81,11 @@ jobs:
             BRANCH="${{ github.event.inputs.branch || 'current' }}" \
             RELEASE="${{ github.event.inputs.release || 'noble' }}" \
             BUILD_DESKTOP="${{ github.event.inputs.build_desktop || 'no' }}" \
-            BUILD_MINIMAL=no \
+            BUILD_MINIMAL=yes \
             EXPERT=yes \
             KERNEL_CONFIGURE=no \
             CLEAN_LEVEL="make,cache" \
+            KERNEL_BTF=no \
             COMPRESS_OUTPUTIMAGE="sha,xz"
         env:
           # 如果编译时间很长，可以设置超时（单位：秒）
