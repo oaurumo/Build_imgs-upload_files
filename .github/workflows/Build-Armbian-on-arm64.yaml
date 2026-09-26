@@ -39,7 +39,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # ── 2. 释放磁盘空间 (Armbian 编译需要 ~50GB) ──
+      # ── 2. 释放磁盘空间 ──
       - name: Free disk space
         run: |
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
@@ -65,14 +65,7 @@ jobs:
             --branch=${{ github.event.inputs.armbian_branch || 'main' }} \
             https://github.com/armbian/build.git armbian-build
 
-      # ── 5. 配置国内镜像加速（可选，国内网络环境建议开启） ──
-     #  - name: Configure China mirror
-     #    run: |
-          # cat > armbian-build/userpatches/config-download-mirror.conf << 'EOF'
-          # DOWNLOAD_MIRROR="china"
-          # EOF
-
-      # ── 6. 编译 Armbian 镜像 ──
+      # ── 5. 编译 Armbian 镜像 ──
       - name: Build Armbian
         run: |
           cd armbian-build
@@ -80,29 +73,51 @@ jobs:
             BOARD="${{ github.event.inputs.board || 'uefi-x86' }}" \
             BRANCH="${{ github.event.inputs.branch || 'current' }}" \
             RELEASE="${{ github.event.inputs.release || 'noble' }}" \
-            BUILD_DESKTOP="${{ github.event.inputs.build_desktop || 'no' }}" \
+            BUILD_DESKTOP="${{ github.event.inputs.build_desktop && 'yes' || 'no' }}" \
             BUILD_MINIMAL=yes \
             EXPERT=yes \
             KERNEL_CONFIGURE=no \
             CLEAN_LEVEL="make,cache" \
             KERNEL_BTF=no \
-            COMPRESS_OUTPUTIMAGE="sha,xz"
+            COMPRESS_OUTPUTIMAGE="sha,img.xz"
         env:
-          # 如果编译时间很长，可以设置超时（单位：秒）
           ARMBIAN_CACHE_ROOTFS: "yes"
 
-      # ── 7. 收集编译产物 ──
-      - name: Collect build artifacts
+      # ── 6. 修复权限（非常关键） ──
+      - name: Fix permissions
+        run: |
+          sudo chown -R $USER:$USER armbian-build/output/images
+
+      # ── 7. 分卷压缩 Armbian 构建目录 ──
+      - name: Split Armbian build output
+        run: |
+          cd armbian-build
+          tar -cpf - \
+            action.yml compile.sh CONTRIBUTING.md Dockerfile lib output \
+            patch renovate.json5 shell.nix userpatches cache config \
+            CREDITS.md extensions LICENSE packages README.md \
+            requirements.txt tools VERSION \
+          | xz -9 -T0 \
+          | split -d -b 1900m - output/images/armbian_build.tar.xz.
+
+      # ── 8. 准备 Release 上传文件 ──
+      - name: Prepare release assets
         run: |
           mkdir -p release-assets
-          # 复制所有生成的镜像文件
-          cp armbian-build/output/images/*.img* release-assets/ 2>/dev/null || true
-          cp armbian-build/output/images/*.sha release-assets/ 2>/dev/null || true
-          cp armbian-build/output/images/*.txt release-assets/ 2>/dev/null || true
-          # 列出产物
+          cp armbian-build/output/images/*.img.xz release-assets/ || true
+          cp armbian-build/output/images/*.tar.xz.* release-assets/ || true
+          cp armbian-build/output/images/*.sha release-assets/ || true
           ls -lh release-assets/
 
-      # ── 8. 上传为构建产物（供调试下载） ──
+      # ── 9. 校验 Release 文件（防止空传） ──
+      - name: Validate release assets
+        run: |
+          test "$(ls -A release-assets)" || {
+            echo "ERROR: release-assets is empty"
+            exit 1
+          }
+
+      # ── 10. 上传 Artifacts（仅调试用） ──
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -112,8 +127,8 @@ jobs:
           retention-days: 7
           compression-level: 0
 
-      # ── 9. 创建 GitHub Release 并上传镜像 ──
-      - name: Create Release and upload images
+      # ── 11. 创建 GitHub Release ──
+      - name: Create Release
         if: success()
         uses: softprops/action-gh-release@v2
         with:
@@ -127,15 +142,10 @@ jobs:
             | 开发板 | `${{ github.event.inputs.board || 'uefi-x86' }}` |
             | 发行版 | `${{ github.event.inputs.release || 'noble' }}` |
             | 分支 | `${{ github.event.inputs.branch || 'current' }}` |
-            | 桌面环境 | `${{ github.event.inputs.build_desktop || 'no' }}` |
-            | 构建时间 | ${{ github.event.inputs.build_desktop && '是' || '否' }} |
+            | 桌面环境 | `${{ github.event.inputs.build_desktop && '是' || '否' }}` |
             | 触发方式 | ${{ github.event_name == 'workflow_dispatch' && '手动触发' || 'Tag 推送' }} |
 
-            > 镜像已压缩为 xz 格式，附带 SHA 校验文件。
-          files: |
-            release-assets/*
-          draft: false
-          prerelease: ${{ github.ref_type != 'tag' }}
-          generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+            ### 下载说明
+
+            - `.img.xz`：可直接写入 SD / eMMC
+            - `armbian_build.tar.xz.*`：分卷压缩，合并方式：
