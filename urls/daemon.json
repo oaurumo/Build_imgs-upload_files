@@ -50,3 +50,16 @@ sudo tee /etc/docker/daemon.json <<'EOF'
 EOF
 sudo systemctl daemon-reload
 sudo systemctl restart docker
+
+================================
+快捷命令
+  https://toolshu.com/docker-mirror 
+第一步：输入原始镜像地址获取命令.
+ghcr.io/armbian/docker-armbian-build:armbian-debian-trixie-latest
+获取命令
+第二步：代理拉取镜像
+docker pull ghcr.dockerproxy.net/armbian/docker-armbian-build:armbian-debian-trixie-latest
+第三步：重命名镜像
+docker tag ghcr.dockerproxy.net/armbian/docker-armbian-build:armbian-debian-trixie-latest ghcr.io/armbian/docker-armbian-build:armbian-debian-trixie-latest
+第四步：删除代理镜像
+docker rmi ghcr.dockerproxy.net/armbian/docker-armbian-build:armbian-debian-trixie-latest
