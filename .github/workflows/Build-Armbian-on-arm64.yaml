@@ -66,11 +66,11 @@ jobs:
             https://github.com/armbian/build.git armbian-build
 
       # ── 5. 配置国内镜像加速（可选，国内网络环境建议开启） ──
-      - name: Configure China mirror
-        run: |
-          cat > armbian-build/userpatches/config-download-mirror.conf << 'EOF'
-          DOWNLOAD_MIRROR="china"
-          EOF
+     #  - name: Configure China mirror
+     #    run: |
+          # cat > armbian-build/userpatches/config-download-mirror.conf << 'EOF'
+          # DOWNLOAD_MIRROR="china"
+          # EOF
 
       # ── 6. 编译 Armbian 镜像 ──
       - name: Build Armbian
