@@ -82,9 +82,9 @@ jobs:
           rm *.img
           cd ../..
           # sudo tar -cpf build.tar  action.yml compile.sh CONTRIBUTING.md Dockerfile lib output patch renovate.json5 shell.nix userpatches cache config CREDITS.md extensions LICENSE packages README.md requirements.txt tools VERSION
-          tar -cpf - action.yml compile.sh CONTRIBUTING.md Dockerfile lib output patch renovate.json5 shell.nix userpatches cache config CREDITS.md extensions LICENSE packages README.md requirements.txt tools VERSION | xz | split -b 1900m - build.tar.xz.
-          mv *.xz* output/images/
-          mv *.xz output/images/
+          sudo tar -cpf - action.yml compile.sh CONTRIBUTING.md Dockerfile lib output patch renovate.json5 shell.nix userpatches cache config CREDITS.md extensions LICENSE packages README.md requirements.txt tools VERSION | sudo xz | sudo split -b 1900m - build.tar.xz.
+          sudo mv *.xz* output/images/
+          # mv *.xz output/images/
           cd output/images/
           #sudo split -b 1990M build.tar build.tar.xz.part-
           # tar -cf - build | xz -9 | split -d -b 1900m - armbian_build.tar.xz.
@@ -98,8 +98,8 @@ jobs:
       - name: Collect build artifacts
         run: |
           mkdir -p release-assets
-          cp armbian-build/output/images/*.xz release-assets/ 2>/dev/null || true
-          cp armbian-build/output/images/*.xz* release-assets/ 2>/dev/null || true
+          # cp armbian-build/output/images/*.xz release-assets/ 2>/dev/null || true
+          sudo cp armbian-build/output/images/*.xz* release-assets/ 2>/dev/null || true
           ls -lh release-assets/
 
       # ── 7. 创建 GitHub Release 并上传镜像 ──
