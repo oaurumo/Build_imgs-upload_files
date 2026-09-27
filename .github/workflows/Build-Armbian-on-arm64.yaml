@@ -4,26 +4,22 @@ on:
   workflow_dispatch:
     inputs:
       board:
-        description: '目标开发板 (如: odroidn2, rock-5b, uefi-x86)'
+        description: ' ( odroidn2, rock-5b...)'
         required: true
         default: 'odroidm1'
       release:
-        description: '基础发行版 (trixie/bookworm/resolute/noble/jammy)'
+        description: '(trixie/bookworm/resolute/noble/jammy)'
         required: true
         default: 'noble'
       branch:
-        description: 'Armbian 分支 (current/edge/legacy)'
+        description: ' (current/edge/legacy)'
         required: true
         default: 'current'
-      build_desktop:
-        description: '是否构建桌面环境'
-        required: true
-        type: boolean
-        default: false
-      armbian_branch:
-        description: 'Armbian Build Framework 分支 (如: v24.11, main)'
-        required: true
-        default: 'main'
+      tag:
+        description: '自定义 Release Tag（如 v1.0.0，留空自动生成）'
+        required: false
+        default: ''
+
   push:
     tags:
       - 'v*'
@@ -34,12 +30,13 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-24.04-arm
+
     steps:
       # ── 1. 检出代码 ──
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # ── 2. 释放磁盘空间 ──
+      # ── 2. 释放磁盘空间 (Armbian 编译需要 ~50GB) ──
       - name: Free disk space
         run: |
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
@@ -73,79 +70,66 @@ jobs:
             BOARD="${{ github.event.inputs.board || 'uefi-x86' }}" \
             BRANCH="${{ github.event.inputs.branch || 'current' }}" \
             RELEASE="${{ github.event.inputs.release || 'noble' }}" \
-            BUILD_DESKTOP="${{ github.event.inputs.build_desktop && 'yes' || 'no' }}" \
+            BUILD_DESKTOP=no \
             BUILD_MINIMAL=yes \
             EXPERT=yes \
             KERNEL_CONFIGURE=no \
             CLEAN_LEVEL="make,cache" \
             KERNEL_BTF=no \
-            COMPRESS_OUTPUTIMAGE="sha,img.xz"
+            COMPRESS_OUTPUTIMAGE="sha,img"
+
+          cd output/images/
+          rm *.img
+          cd ../..
+          # sudo tar -cpf build.tar  action.yml compile.sh CONTRIBUTING.md Dockerfile lib output patch renovate.json5 shell.nix userpatches cache config CREDITS.md extensions LICENSE packages README.md requirements.txt tools VERSION
+          tar -cpf - action.yml compile.sh CONTRIBUTING.md Dockerfile lib output patch renovate.json5 shell.nix userpatches cache config CREDITS.md extensions LICENSE packages README.md requirements.txt tools VERSION | xz | split -b 1900m - build.tar.xz.
+          mv *.xz* output/images/
+          mv *.xz output/images/
+          cd output/images/
+          #sudo split -b 1990M build.tar build.tar.xz.part-
+          # tar -cf - build | xz -9 | split -d -b 1900m - armbian_build.tar.xz.
+          # tar -cf - build | xz -9 -T0 --memlimit-compress=2G | split -d -b 1900m - armbian_build.tar.xz.
+          # mv *.xz.* output/images/
+          # sudo xz -9 *.img
         env:
           ARMBIAN_CACHE_ROOTFS: "yes"
 
-      # ── 6. 修复权限（非常关键） ──
-      - name: Fix permissions
-        run: |
-          sudo chown -R $USER:$USER armbian-build/output/images
-
-      # ── 7. 分卷压缩 Armbian 构建目录 ──
-      - name: Split Armbian build output
-        run: |
-          cd armbian-build
-          tar -cpf - \
-            action.yml compile.sh CONTRIBUTING.md Dockerfile lib output \
-            patch renovate.json5 shell.nix userpatches cache config \
-            CREDITS.md extensions LICENSE packages README.md \
-            requirements.txt tools VERSION \
-          | xz -9 -T0 \
-          | split -d -b 1900m - output/images/armbian_build.tar.xz.
-
-      # ── 8. 准备 Release 上传文件 ──
-      - name: Prepare release assets
+      # ── 6. 收集编译产物 ──
+      - name: Collect build artifacts
         run: |
           mkdir -p release-assets
-          cp armbian-build/output/images/*.img.xz release-assets/ || true
-          cp armbian-build/output/images/*.tar.xz.* release-assets/ || true
-          cp armbian-build/output/images/*.sha release-assets/ || true
+          cp armbian-build/output/images/*.xz release-assets/ 2>/dev/null || true
+          cp armbian-build/output/images/*.xz* release-assets/ 2>/dev/null || true
           ls -lh release-assets/
 
-      # ── 9. 校验 Release 文件（防止空传） ──
-      - name: Validate release assets
-        run: |
-          test "$(ls -A release-assets)" || {
-            echo "ERROR: release-assets is empty"
-            exit 1
-          }
-
-      # ── 10. 上传 Artifacts（仅调试用） ──
-      - name: Upload artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: armbian-images-${{ github.event.inputs.board || 'uefi-x86' }}
-          path: armbian-build/output/images/
-          retention-days: 7
-          compression-level: 0
-
-      # ── 11. 创建 GitHub Release ──
-      - name: Create Release
+      # ── 7. 创建 GitHub Release 并上传镜像 ──
+      - name: Create Release and upload images
         if: success()
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || format('armbian-{0}-{1}', github.event.inputs.board, github.run_number) }}
+          tag_name: >-
+            ${{
+              github.event.inputs.tag != '' &&
+              github.event.inputs.tag ||
+              (github.ref_type == 'tag' && github.ref_name) ||
+              format('armbian-{0}-{1}', github.event.inputs.board, github.run_number)
+            }}
           name: Armbian ${{ github.event.inputs.board || 'uefi-x86' }} - ${{ github.event.inputs.release || 'noble' }}
           body: |
             ## Armbian 构建信息
 
             | 项目 | 值 |
             |------|------|
-            | 开发板 | `${{ github.event.inputs.board || 'uefi-x86' }}` |
+            | 开发板 | `${{ github.event.inputs.board || 'odroidn2' }}` |
             | 发行版 | `${{ github.event.inputs.release || 'noble' }}` |
-            | 分支 | `${{ github.event.inputs.branch || 'current' }}` |
-            | 桌面环境 | `${{ github.event.inputs.build_desktop && '是' || '否' }}` |
+            | 分支 | `${{ github.event.inputs.branch || 'current' }}` |            
             | 触发方式 | ${{ github.event_name == 'workflow_dispatch' && '手动触发' || 'Tag 推送' }} |
 
-            ### 下载说明
-
-            - `.img.xz`：可直接写入 SD / eMMC
-            - `armbian_build.tar.xz.*`：分卷压缩，合并方式：
+            > 镜像已压缩为 xz 格式，附带 SHA 校验文件。
+          files: |
+            release-assets/*
+          draft: false
+          prerelease: ${{ github.ref_type != 'tag' }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
