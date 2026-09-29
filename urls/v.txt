@@ -364,3 +364,12 @@ trojan://humanity@193.239.160.134:443?security=tls&sni=www.calmlunch.com&type=ws
 vless://06c4e938-2954-478f-a870-ca1b163e30e9@94.183.170.135:443?encryption=none&security=none&sni=estproxy4.lockdwn.com&type=ws&path=%2F#Iran
 trojan://Telegram_healer_config@soskeynets.z6-0hlnubjibwzpa85.workers.dev:443?security=tls&sni=6m1rGyIEclMRx9HeF1.Z6-0hlNUbJIBwZPa85.wOrKerS.DEV&fp=chrome&alpn=http%2F1.1&type=ws&path=%2Ftr%2FGaQvfFwT5sWgVxHig8YaXjtiuQPZNI%3Fed%3D2560
 hysteria2://sOiWCQ2AdIV0OWNuqQVyWp4JZnRxdyLROSjX@faq.wwwinternetvideo.click:443?sni=cabinet.wwwinternetvideo.click&insecure=1#United%2BKingdom
+hysteria2://HysTeria2026%21Proxy@mz.hkychina.com:8443?sni=mz.hkychina.com#%E9%A6%99%E6%B8%AF%2B%E8%85%BE%E8%AE%AF%E4%BA%91
+vless://94877739-3af6-4fbb-85b6-ca6fe86c7696@84.32.98.254:443?encryption=none&flow=xtls-rprx-vision&security=reality&sni=tickets.betust.net&fp=chrome&pbk=TRaUsnzFf-AhWUuW4RQUQOBYTdM-qJdLDTTkzQNkcRw&sid=f70764f8&type=tcp&headerType=none#%E7%AB%8B%E9%99%B6%E5%AE%9B%2BV2CROSS.COM
+vless://b817f3f5-8cdc-4b96-8412-15ce44c46f90@2.26.93.246:43001?encryption=none&flow=xtls-rprx-vision&security=reality&sni=edge-57ed87.cdn-edge-cache.art&fp=chrome&pbk=tIL8mgcG0IWFA538K_cVma848BqVw-XOlNvXeDwDQ30&sid=6cdef1e8aaca616f&spx=%2F&type=tcp&headerType=none#%E8%8B%B1%E5%9B%BD%2BV2CROSS.COM
+vless://80f72027-2201-4541-9abb-7070c9b0869e@pol2.serverslocal.ru:443?encryption=none&flow=xtls-rprx-vision&security=reality&sni=pol2.serverslocal.ru&fp=chrome&pbk=FdnIXseNFtVqgGO7-GyAFgQ4GUqzuWz5jywOmuZM6To&sid=dd6a0fb60cd7b2fc&type=tcp&headerType=none#%E4%BC%8A%E6%9C%97%2BV2CROSS.COM
+hysteria2://96ab5cd282733fd4c312a61f972f330a@vp3.yysyy.online:443?sni=vp3.yysyy.online#%E6%97%A5%E6%9C%AC%2B%E4%B8%9C%E4%BA%ACChoopa%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%BF%83
+trojan://humanity@104.18.152.204:443?security=tls&sni=www.ignitelimit.com&fp=chrome&type=ws&path=%2Fassignment#%E7%BE%8E%E5%9B%BD%2BCloudFlare%E8%8A%82%E7%82%B9
+trojan://humanity@104.18.152.225:443?security=tls&sni=www.ignitelimit.com&fp=chrome&type=ws&path=%2Fassignment#%E7%BE%8E%E5%9B%BD%2BCloudFlare%E8%8A%82%E7%82%B9
+vless://8344360f-0349-4784-a19f-33fd92e89389@api.w2m.ink:443?encryption=none&security=tls&sni=api.w2m.ink&fp=chrome&type=ws&host=api.w2m.ink&path=%2Fv2#%E7%BE%8E%E5%9B%BD%2BCloudFlare%E8%8A%82%E7%82%B9
+trojan://humanity@104.16.174.124:443?security=tls&sni=www.ignitelimit.com&fp=chrome&type=ws&path=%2Fassignment#%E7%BE%8E%E5%9B%BD%2BCloudFlare%E8%8A%82%E7%82%B9
