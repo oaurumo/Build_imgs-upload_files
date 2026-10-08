@@ -14,3 +14,5 @@ https://github.com/Miuzarte/ScrcpyForAndroid/releases/download/v0.7.0/ScrcpyForA
 https://github.com/Miuzarte/ScrcpyForAndroid/archive/refs/tags/v0.7.0.tar.gz
 https://github.com/didjdk/adbhelper/releases/download/v1.3.1/adbhelper_v1.3.1.apk
 https://github.com/GangJust/ADBHelper/releases/download/v2.0.0/AdbHelper-window-2.0.0.zip
+https://github.com/sky22333/skyadb/releases/download/v1.1.5/app-release.apk
+https://github.com/sky22333/skyadb/archive/refs/tags/v1.1.5.tar.gz
