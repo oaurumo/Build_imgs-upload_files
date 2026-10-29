@@ -36,6 +36,7 @@ on:
           - panther-x2
           - jp-tvbox-3566
           - rk3318-box
+          - som3568
           - aml-s9xx-box   
       armbian_branch:
         description: "Select linux branch."
