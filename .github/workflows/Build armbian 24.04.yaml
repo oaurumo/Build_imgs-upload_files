@@ -125,7 +125,9 @@ jobs:
           # sudo update-locale LANG=zh_CN.UTF-8
           sudo timedatectl set-ntp true
           timedatectl
-          cd build/
+          cd build
+          wget https://github.com/oaurumo/Build_imgs-upload_files/releases/download/odroidm1-trixie/som3568.conf
+          mv som3568.conf config/boards/som3568.conf
           # sed -i '/KERNEL_TARGET="current,edge"/d' config/boards/rk3318-box.tvb
           # echo "KERNEL_TARGET="current,legacy,edge,5.15.y,5.10.y"" > config/boards/rk3318-box.tvb
           mkdir -p userpatches
